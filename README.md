@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # UART Events Example
 
 (See the README.md file in the upper level 'examples' directory for more information about examples.)
@@ -54,3 +55,7 @@ I (12089) uart_events: [UART DATA]: 1
 I (12089) uart_events: [DATA EVT]:
 b
 ```
+=======
+# esp32-project
+this is my official project with using esp-32 module
+>>>>>>> d524022e6d850b9b9887c62936e8cae478e8b258
