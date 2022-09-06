@@ -18,7 +18,7 @@ menu "Example Configuration"
 
     config ESP_WIFI_PASSWORD
         string "WiFi Password"
-        default "cudo0509"
+        default "pass0001"
         help
             WiFi password (WPA or WPA2) for the example to use.
 

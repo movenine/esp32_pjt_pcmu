@@ -27,6 +27,11 @@
 #define BD_DEBUG_ON				0x25
 #define BD_DEBUG_OFF			0x26
 
+//edited by dglee 2022.03.22
+#define BD_RESET_EX				0x27
+#define BD_PCMU_STATE			0x28
+#define BD_PCMU_WRITE_ID		0x29
+
 #define BD_GPIO_WRITE			0x30
 #define BD_IN_EEPROM_WRITE		0x31
 #define BD_EX_EEPROM_WRITE		0x32
@@ -111,10 +116,16 @@ typedef struct
 	unsigned char stxflg;
 } protocol_bc_t;
 
+
 static protocol_bc_t bc_packet_buf_wifi;
 static protocol_bc_t bc_packet_buf_uart2;
 
 void protocol_init(void);
+
+//Edited by leedg 20220328
+void protocol_status_clear(void);
+void BC_protocol_reset_ack(uint8_t bd_id);
+
 int BC_connect(uint8_t bd_id, uint8_t *tx_buf);
 
 int BC_protocol_answer_wifi(uint8_t bd_id, uint8_t opcode, uint8_t *data, int data_len, uint8_t *tx_buf);
@@ -124,8 +135,3 @@ int BC_protocol_analysis_wifi(uint8_t bd_id, uint8_t *tx_buf, uint8_t *rx_buf, i
 int BC_protocol_answer_uart2(uint8_t bd_id, uint8_t opcode, uint8_t *data, int data_len, uint8_t *tx_buf);
 int BC_protocol_processing_uart2(uint8_t bd_id, uint8_t *tx_buf);
 int BC_protocol_analysis_uart2(uint8_t bd_id, uint8_t *tx_buf, uint8_t *rx_buf, int rx_buf_len);
-
-
-
-
-
