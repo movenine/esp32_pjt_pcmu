@@ -1,61 +1,67 @@
-<<<<<<< HEAD
-# UART Events Example
+# PCMU project README
+ESP32 모듈을 활용한 전원제어 및 모니터링 보드 개발 프로젝트입니다.
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+## Overview
+- Hardware : RS485 2 port, Relay 2ch, Current sensor(Uart), GPIO
+- Firmware : C (FreeRTOS)
+- Workspace : Visual studio code, esp-idf 4.0
+- 빌드된 이미지들은 flash download tool 로 다운로드 합니다. [flash downloader](https://www.espressif.com/en/support/download/other-tools)
 
-This example shows how to use the UART driver to handle special UART events. It also reads data from `UART0` directly,
-and echoes it back to the monitoring console.
+## Features
+- AC전원 전류감시
+- AC전원 On/Off 제어, 수동개폐 버튼
+- 모니터링 데이터 전송 (RS485)
+- LED 상태표시
 
-## How to use example
+## Program flow
+  펌웨어 구동 순서에 관한 플로우는 아래 링크를 참조
+  [diagram](https://drive.google.com/file/d/19-ZbDikXsktoTc2qnoBGVGnfmlUCmKA7/view?usp=drive_link)
 
-### Hardware Required
+## Envirments & Build
+- Install ESP-IDF for vscode [참조](https://github.com/espressif/vscode-esp-idf-extension/blob/HEAD/docs/tutorial/install.md)
+- 프로젝트 폴더 생성 및 git download
+- compilePath 지정 (file: c_cpp_properties.json)
+  
+  컴파일 실패시, 크로스컴파일 버전을 확인하고 경로를 지정해 주어야 합니다.
+  ```
+  "compilerPath": "C:\\Users\\[user_folder_name]\\.espressif\\tools\\xtensa-esp32-elf\\esp-2021r2-patch2-8.4.0\\xtensa-esp32-elf\\bin\\xtensa-esp32-elf-gcc.exe",
+  
+- settings.json 파일의 시리얼 포트 설정
+  ```
+  {
+    "idf.adapterTargetName": "esp32",
+    "idf.openOcdConfigs": [
+        "board/esp32-wrover-kit-3.3v.cfg"
+    ],
+    "idf.flashType": "UART",
+    "idf.portWin": "COM5",
+    "files.associations": {
+        "*.ipp": "c",
+        "esp_log.h": "c",
+        "gpio.h": "c",
+        "*.inc": "c",
+        "safe_iop.h": "c",
+        "esp_netif.h": "c",
+        "stdint.h": "c",
+        "esp_system.h": "c",
+        "esp_err.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+  }
 
-The example can be used with any ESP32 development board connected to a computer with a USB cable.
+- CMaskLists.txt 파일에 추가 소스코드 및 스토리지 파일 경로 설정
+  ```
+  idf_component_register(SRCS "safe_iop.c" "fs.c" "main.c"
+					"protocol.c"
+                    INCLUDE_DIRS ".")
+  # Create a SPIFFS image from the contents of the 'spiffs_image' directory
+  # 20220727 leedg : 파티션 추가
+  spiffs_create_partition_image(storage ../spiffs_image FLASH_IN_PROJECT)
 
-### Configure the project
+- vscode 창 하단에 메뉴를 통해 **menuconfig**, **clean**, **build**, **flash** 작업을 진행
 
-```
-idf.py menuconfig
-```
-or
-```
-idf.py menuconfig
-```
+## Flash Download 사용법
+  이미지 다운로드 방법은 아래 링크를 참조
+  [다운로드 방법](https://drive.google.com/file/d/1CqSedxag_xgJu6Ys-tJ91rqqmVvL2GL5/view?usp=sharing)
 
-* Set serial port under Serial Flasher Options.
-
-### Build and Flash
-
-Build the project and flash it to the board, then run monitor tool to view serial output:
-
-```
-idf.py -p PORT flash monitor
-```
-or
-```
-idf.py -p PORT flash monitor
-```
-
-(To exit the serial monitor, type ``Ctrl-]``.)
-
-See the Getting Started Guide for full steps to configure and use ESP-IDF to build projects.
-
-## Example Output
-
-Pushing `a` followed by a `b` on the keyboard will generate the following output:
-```
-...
-I (0) cpu_start: Starting scheduler on APP CPU.
-I (299) uart: queue free spaces: 20
-I (2249) uart_events: uart[0] event:
-I (2249) uart_events: [UART DATA]: 1
-I (2249) uart_events: [DATA EVT]:
-aI (12089) uart_events: uart[0] event:
-I (12089) uart_events: [UART DATA]: 1
-I (12089) uart_events: [DATA EVT]:
-b
-```
-=======
-# esp32-project
-this is my official project with using esp-32 module
->>>>>>> d524022e6d850b9b9887c62936e8cae478e8b258
+  
